@@ -81,7 +81,7 @@ public class Main {
         System.out.print("Enter task number: ");
         taskNumber = userInput.nextInt( );
         userInput.nextLine();
-        System.out.printf("Enter your SQL query: ");
+        System.out.println("Enter your SQL query: ");
         sqlQuery = userInput.nextLine( );
         System.out.println("Your task number: "+taskNumber);
         System.out.println("Your query: "+sqlQuery);
