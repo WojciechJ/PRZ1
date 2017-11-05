@@ -3,6 +3,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
@@ -71,5 +72,18 @@ public class Main {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+
+        //SQL sequence input
+        Scanner userInput = new Scanner( System.in );
+        String sqlQuery;
+        int taskNumber;
+        System.out.print("Enter task number: ");
+        taskNumber = userInput.nextInt( );
+        userInput.nextLine();
+        System.out.printf("Enter your SQL query: ");
+        sqlQuery = userInput.nextLine( );
+        System.out.println("Your task number: "+taskNumber);
+        System.out.println("Your query: "+sqlQuery);
     }
 }
