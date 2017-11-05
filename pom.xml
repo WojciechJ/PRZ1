@@ -5,6 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>Przyrost_1</groupId>
+    <artifactId>PRZ1</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>

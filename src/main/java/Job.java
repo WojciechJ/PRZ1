@@ -5,7 +5,7 @@ import java.util.Date;
 import org.quartz.*;
 
 @PersistJobDataAfterExecution
-public class Job  implements org.quartz.Job{
+public class Job implements org.quartz.Job{
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
         {
