@@ -1,0 +1,29 @@
+2017-11-05 08:57:23 INFO  StdSchedulerFactory:1208 - Using default implementation for ThreadExecutor
+2017-11-05 08:57:23 INFO  SimpleThreadPool:268 - Job execution threads will use class loader of thread: main
+2017-11-05 08:57:23 INFO  SchedulerSignalerImpl:61 - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2017-11-05 08:57:23 INFO  QuartzScheduler:229 - Quartz Scheduler v.2.3.0 created.
+2017-11-05 08:57:23 INFO  RAMJobStore:155 - RAMJobStore initialized.
+2017-11-05 08:57:23 INFO  QuartzScheduler:294 - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2017-11-05 08:57:23 INFO  StdSchedulerFactory:1362 - Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+2017-11-05 08:57:23 INFO  StdSchedulerFactory:1366 - Quartz scheduler version: 2.3.0
+2017-11-05 08:57:23 INFO  QuartzScheduler:547 - Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+2017-11-05 08:57:23 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 08:57:49 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 08:58:12 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 08:58:35 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 08:59:02 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 08:59:27 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 08:59:56 DEBUG QuartzSchedulerThread:291 - batch acquisition of 1 triggers
+2017-11-05 09:00:00 DEBUG PropertySettingJobFactory:51 - Producing instance of Job 'Lessons.p2', class=Job
+2017-11-05 09:00:00 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 09:00:00 DEBUG JobRunShell:201 - Calling execute on job Lessons.p2
+2017-11-05 09:00:26 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 09:00:51 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
+2017-11-05 09:01:19 DEBUG QuartzSchedulerThread:291 - batch acquisition of 0 triggers
