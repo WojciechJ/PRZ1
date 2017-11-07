@@ -1,9 +1,16 @@
+
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
+
+import java.util.Objects;
 import java.util.Scanner;
+
+
+
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
@@ -58,14 +65,10 @@ public class Main {
                     .forJob("p3", "Lessons")
                     .build();
 
-            //schedule jobs
             scheduler.scheduleJob(job1, trigger1);
             scheduler.scheduleJob(job2, trigger2);
             scheduler.scheduleJob(job3, trigger3);
-
-            //start
             scheduler.start();
-
 
         } catch (SchedulerException se) {
             se.printStackTrace();
@@ -85,5 +88,91 @@ public class Main {
         sqlQuery = userInput.nextLine( );
         System.out.println("Your task number: "+taskNumber);
         System.out.println("Your query: "+sqlQuery);
+
+        //checking if query is correct
+        String[] arr = sqlQuery.split(" ");
+        Boolean select=false, from=false, where=false, group=false, having=false, order=false, correct=true;
+        for(String ss : arr)
+        {
+            if(Objects.equals(ss, "select"))
+            {
+                if(from==false && where==false && group==false && having==false && order==false)
+                {
+                    System.out.println(ss);
+                    select=true;
+                }
+
+                else
+                {
+                    correct=false;
+                    break;
+                }
+            }
+
+            else if(Objects.equals(ss, "from"))
+            {
+                if(select)
+                    from=true;
+                else
+                {
+                    correct=false;
+                    break;
+                }
+            }
+
+            else if(Objects.equals(ss, "where"))
+            {
+                if(select && from)
+                    where=true;
+                else
+                {
+                    correct=false;
+                    break;
+                }
+
+            }
+
+            else if(Objects.equals(ss, "group"))
+            {
+                if(select && from && where)
+                    group=true;
+                else
+                {
+                    correct=false;
+                    break;
+                }
+            }
+
+            else if(Objects.equals(ss, "having"))
+            {
+                if(select && from && where && group)
+                    having=true;
+                else
+                {
+                    correct=false;
+                    break;
+                }
+            }
+
+            else if(Objects.equals(ss, "order"))
+            {
+                if(select && from && where && group && having)
+                    order=true;
+                else
+                {
+                    correct=false;
+                    break;
+                }
+            }
+
+
+        }
+        if(correct)
+            System.out.println("Your SQL query is correct.");
+        else
+            System.out.println("There was a problem with your SQL query.");
+
+
+
     }
 }
