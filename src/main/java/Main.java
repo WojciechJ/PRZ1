@@ -1,16 +1,11 @@
-
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import java.util.Date;
-
-import java.util.Objects;
-import java.util.Scanner;
-
-
-
+import java.util.*;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
@@ -33,13 +28,14 @@ public class Main {
                     .build();
 
 
-            //academic year
+            //rok akademicki
             String startDateStr = "2017-10-01 00:00:00.0";
             String endDateStr = "2018-06-29 00:00:00.0";
 
             Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(startDateStr);
             Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(endDateStr);
 
+            //rozklad czasowy na WMI
             //8:15-8:59
             CronTrigger trigger1 = newTrigger()
                     .withIdentity("part1", "Lessons")
@@ -76,102 +72,131 @@ public class Main {
             e.printStackTrace();
         }
 
+        //tworzenie pliku txt
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("answers.txt", "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        //SQL sequence input
+        //Podanie danych
         Scanner userInput = new Scanner( System.in );
         String sqlQuery;
-        int taskNumber;
-        System.out.print("Enter task number: ");
-        taskNumber = userInput.nextInt( );
-        userInput.nextLine();
-        System.out.println("Enter your SQL query: ");
-        sqlQuery = userInput.nextLine( );
-        System.out.println("Your task number: "+taskNumber);
-        System.out.println("Your query: "+sqlQuery);
+        String taskNumber;
+        List<String> correctAnswers = new ArrayList<>();
 
-        //checking if query is correct
-        String[] arr = sqlQuery.split(" ");
-        Boolean select=false, from=false, where=false, group=false, having=false, order=false, correct=true;
-        for(String ss : arr)
+        for(;;)
         {
-            if(Objects.equals(ss, "select"))
-            {
-                if(from==false && where==false && group==false && having==false && order==false)
-                {
-                    System.out.println(ss);
-                    select=true;
-                }
+            System.out.print("Podaj numer zadania: ");
+            taskNumber = userInput.nextLine();
+            System.out.println("Podaj zapytanie SQL: ");
+            sqlQuery = userInput.nextLine();
 
-                else
-                {
-                    correct=false;
-                    break;
-                }
-            }
+            //sprawdzanie poprawności zapytania
+            String[] arr = sqlQuery.split(" ");
+            Boolean select = false, from = false, where = false, group = false, having = false, order = false, correct = true;
+            for (String ss : arr) {
+                if (Objects.equals(ss, "select")) {
+                    if (from == false && where == false && group == false && having == false && order == false) {
+                        select = true;
+                    } else {
+                        correct = false;
+                        break;
+                    }
+                } else if (Objects.equals(ss, "from")) {
+                    if (select)
+                        from = true;
+                    else {
+                        correct = false;
+                        break;
+                    }
+                } else if (Objects.equals(ss, "where")) {
+                    if (select && from)
+                        where = true;
+                    else {
+                        correct = false;
+                        break;
+                    }
 
-            else if(Objects.equals(ss, "from"))
-            {
-                if(select)
-                    from=true;
-                else
-                {
-                    correct=false;
-                    break;
-                }
-            }
-
-            else if(Objects.equals(ss, "where"))
-            {
-                if(select && from)
-                    where=true;
-                else
-                {
-                    correct=false;
-                    break;
-                }
-
-            }
-
-            else if(Objects.equals(ss, "group"))
-            {
-                if(select && from && where)
-                    group=true;
-                else
-                {
-                    correct=false;
-                    break;
-                }
-            }
-
-            else if(Objects.equals(ss, "having"))
-            {
-                if(select && from && where && group)
-                    having=true;
-                else
-                {
-                    correct=false;
-                    break;
+                } else if (Objects.equals(ss, "group")) {
+                    if (select && from && where)
+                        group = true;
+                    else {
+                        correct = false;
+                        break;
+                    }
+                } else if (Objects.equals(ss, "having")) {
+                    if (select && from && where && group)
+                        having = true;
+                    else {
+                        correct = false;
+                        break;
+                    }
+                } else if (Objects.equals(ss, "order")) {
+                    if (select && from && where && group && having)
+                        order = true;
+                    else {
+                        correct = false;
+                        break;
+                    }
                 }
             }
-
-            else if(Objects.equals(ss, "order"))
+            if(!select)
+                correct=false;
+            //odpowiedz na to samo zadanie nadpisuje je
+            if (correct)
             {
-                if(select && from && where && group && having)
-                    order=true;
+                if(!correctAnswers.isEmpty())
+                {
+                    Boolean contains=false;
+                    for (int i = 0; i < correctAnswers.size(); i++)
+                    {
+                        if (correctAnswers.get(i).contains(taskNumber))
+                        {
+                            String tmp=correctAnswers.get(i).replace(correctAnswers.get(i), taskNumber+" "+sqlQuery);
+                            correctAnswers.set(i, tmp);
+                            System.out.println("Twoje zapytanie jest poprawne. Zadanie zostało nadpisane.");
+                            contains=true;
+                            break;
+                        }
+                    }
+                    if(!contains)
+                    {
+                        System.out.println("Twoje zapytanie jest poprawne.");
+                        correctAnswers.add(taskNumber + " " + sqlQuery);
+                    }
+                }
                 else
                 {
-                    correct=false;
-                    break;
+                    System.out.println("Twoje zapytanie jest poprawne.");
+                    correctAnswers.add(taskNumber + " " + sqlQuery);
                 }
+
+            }
+            else
+            {
+                System.out.println("BLĄD: Twoje zapytanie jest niepoprawne.");
+            }
+
+            //reczne zapisanie posortowanych odpowiedzi
+            System.out.println("Kontynuuj [k] Zakończ [z]");
+            String cont = userInput.nextLine();
+            if(Objects.equals(cont, "z"))
+            {
+                java.util.Collections.sort(correctAnswers);
+                for(int i=0;i<correctAnswers.size();i++)
+                {
+                    writer.println(correctAnswers.get(i));
+                }
+                writer.close();
+                break;
             }
 
 
         }
-        if(correct)
-            System.out.println("Your SQL query is correct.");
-        else
-            System.out.println("There was a problem with your SQL query.");
-
 
 
     }
